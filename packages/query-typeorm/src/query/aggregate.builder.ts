@@ -69,10 +69,12 @@ export class AggregateBuilder<Entity> {
     if (!fields) {
       return [];
     }
-    return fields.map((field) => {
-      const col = alias ? `${alias}.${field as string}` : (field as string);
-      const aggAlias = `${func}_${field as string}`;
-      return [`${func}(${col})`, aggAlias];
-    });
+    return fields
+      .filter((field) => field !== '__typename')
+      .map((field) => {
+        const col = alias ? `${alias}.${field as string}` : (field as string);
+        const aggAlias = `${func}_${field as string}`;
+        return [`${func}(${col})`, aggAlias];
+      });
   }
 }
